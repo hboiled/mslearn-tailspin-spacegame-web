@@ -5,6 +5,7 @@
 
 trigger:
 - master
+- feature/*
 
 pool:
   vmImage: 'ubuntu-18.04' # explicit version required for project
