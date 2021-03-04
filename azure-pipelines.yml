@@ -10,7 +10,7 @@ trigger:
 variables:
   solution: '**/*.sln'
   buildConfiguration: 'Release'
-  
+  serviceConnection : 'MS Learn Demo'
 
 stages:
 - stage: 'Build'
@@ -68,3 +68,26 @@ stages:
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifacts - drop' # output is in drop!
       condition: succeeded()
+
+- stage: 'Deploy'
+  displayName: 'Deploy the web application'
+  dependsOn: Build
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-18.04'
+    environment: dev
+    variables:
+    - group: Mslearn
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureWebApp@1
+            displayName: 'Azure App Service Deploy: website'
+            inputs:
+              azureSubscription: '$(serviceConnection)'
+              appName: '$(WebAppName)'
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
