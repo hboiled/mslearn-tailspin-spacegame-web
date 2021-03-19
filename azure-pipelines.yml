@@ -11,6 +11,7 @@ variables:
   solution: '**/*.sln'
   buildConfiguration: 'Release'
   serviceConnection : 'MS Learn Demo'
+  releaseBranchName: 'master' # release
 
 stages:
 - stage: 'Build'
@@ -69,9 +70,15 @@ stages:
       displayName: 'Publish Artifacts - drop' # output is in drop!
       condition: succeeded()
 
-- stage: 'Deploy'
+- stage: 'Dev'
   displayName: 'Deploy the web application'
   dependsOn: Build
+  condition: |
+    and
+    (
+      succeeded(),
+      eq(variables['Build.SourceBranchName'], variables['releaseBranchName'])
+    )
   jobs:
   - deployment: Deploy
     pool:
