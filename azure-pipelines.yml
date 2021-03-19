@@ -13,6 +13,14 @@ variables:
   serviceConnection : 'MS Learn Demo'
   releaseBranchName: 'master' # release
 
+schedules:
+- cron: '0 3 * * *'
+  displayName: Deploy every day at 3 A.M.
+  branches:
+    include:
+    - master
+  always: false 
+
 stages:
 - stage: 'Build'
   displayName: 'Build Web App'
