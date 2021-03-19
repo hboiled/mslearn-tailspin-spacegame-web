@@ -98,15 +98,11 @@ stages:
       runOnce:
         deploy:
           steps:
-          - download: current
-            artifact: drop
-          - task: AzureWebApp@1
-            displayName: 'Azure App Service Deploy: website'
-            inputs:
-              azureSubscription: '$(serviceConnection)'
-              appName: '$(WebAppName)'
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-
+          - template: templates/deploy-webapp.yml
+            parameters: 
+              serviceConnection: '$(serviceConnection)'
+              webAppName: '$(WebAppName)'     
+      
 - stage: 'Test'
   displayName: 'Deploy to the test environment'
   dependsOn: Dev
@@ -122,14 +118,10 @@ stages:
       runOnce:
         deploy:
           steps:
-          - download: current
-            artifact: drop
-          - task: AzureWebApp@1
-            displayName: 'Azure App Service Deploy: website'
-            inputs:
-              azureSubscription: '$(serviceConnection)'
-              appName: '$(WebAppNameTest)'
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+          - template: templates/deploy-webapp.yml
+            parameters: 
+              serviceConnection: '$(serviceConnection)'
+              webAppName: '$(WebAppNameTest)'            
 
 - stage: 'Staging'
   displayName: 'Deploy to the staging environment'
@@ -145,11 +137,8 @@ stages:
       runOnce:
         deploy:
           steps:
-          - download: current
-            artifact: drop
-          - task: AzureWebApp@1
-            displayName: 'Azure App Service Deploy: website'
-            inputs:
-              azureSubscription: '$(serviceConnection)'
-              appName: '$(WebAppNameStaging)'
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+          - template: templates/deploy-webapp.yml
+            parameters: 
+              serviceConnection: '$(serviceConnection)'
+              webAppName: '$(WebAppNameStaging)'  
+          

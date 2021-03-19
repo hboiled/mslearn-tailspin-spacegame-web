@@ -1,0 +1,17 @@
+parameters:
+- name: serviceConnection
+  type: string
+- name: webAppName
+  type: string
+
+
+steps:
+- download: current
+  artifact: drop
+
+- task: AzureWebApp@1
+  displayName: 'Azure App Service Deploy: website'
+  inputs:
+    azureSubscription: ${{ parameters.serviceConnection }}
+    appName: ${{ parameters.webAppName }}
+    package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'                                    
