@@ -117,7 +117,7 @@ stages:
       vmImage: 'ubuntu-18.04'
     environment: test
     variables:
-    - group: 'Release'
+    - group: 'Mslearn'
     strategy:
       runOnce:
         deploy:
