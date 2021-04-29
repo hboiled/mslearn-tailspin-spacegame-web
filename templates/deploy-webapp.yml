@@ -12,6 +12,11 @@ steps:
 - task: AzureWebApp@1
   displayName: 'Azure App Service Deploy: website'
   inputs:
+    AppSettings: '
+    -PlaneRegistrationEndpoint abc 
+    -PlaneSeatEndpoint 123
+    -RegimeEndpoint uiewfhwe
+    -WorkOrderEndpoint ashdoisad'
     azureSubscription: ${{ parameters.serviceConnection }}
     appName: ${{ parameters.webAppName }}
-    package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'                                    
+    package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
